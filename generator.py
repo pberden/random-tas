@@ -7,14 +7,15 @@ Created on Wed Dec  9 14:03:42 2015
 
 import csv as csv
 import random as r
-import datetime as dt
+# import datetime as dt
 import time
 import numpy as np
 
 # Set variables
-rowcount = 1000
+rowcount = 2
 startDate = "2014-01-01"
 endDate = "2015-12-31"
+
 
 # Functions
 def strTimeProp(start, end, format, prop):
@@ -62,7 +63,7 @@ FINANCIAL_ACCOUNT_ID = ["0000141000",
                         "0000196000",
                         "0000140000"]
 # FA_DOCUMENT_DATE = 'Randomly generated in loop'
-FA_VALID_TO_DATE = '9999-12-31'
+FA_VALID_TO_DATE = "9999-12-31"
 CONTROLLING_AREA_ID = ''
 COST_CENTER_ID = ''
 CC_VALID_TO_DATE = ''
@@ -89,7 +90,7 @@ FINANCIAL_DOCUMENT_ID = ["RV",
                          "AA",
                          "ZE",
                          "DE"]
-ACCOUNTING_DOCUMENT_ID = 100000000 # Starting number left pad one 0
+ACCOUNTING_DOCUMENT_ID = 100000000  # Starting number left pad one 0
 ACCOUNTING_DOCUMENT_ITEM_ID = ["001",
                                "002",
                                "003",
@@ -129,8 +130,8 @@ ACCOUNTING_DOCUMENT_ITEM_ID = ["001",
 
 # loop
 with open('data.csv', 'wb') as csvfile:
-    datawriter = csv.writer(csvfile, delimiter=';',
-                            quotechar='|', quoting=csv.QUOTE_MINIMAL)
+    datawriter = csv.writer(csvfile, delimiter=',',
+                            quotechar="'", quoting=csv.QUOTE_NONNUMERIC)
     for x in range(0, rowcount):
         FA_DOCUMENT_DATE = randomDate(startDate, endDate, r.random())
         debit_credit = r.choice(DEBIT_CREDIT_ID)
@@ -145,6 +146,8 @@ with open('data.csv', 'wb') as csvfile:
         #  Cleared
         else:
             open_amount = 0
+            cur_open_pd_amount = 0
+            cur_open_days = 0
             cur_clea_amount = amount
             cur_late_amount = np.random.choice([amount, 0], 1, p=[0.2, 0.8])[0]
         datawriter.writerow([TAS_SOURCE_ID,
@@ -172,15 +175,14 @@ with open('data.csv', 'wb') as csvfile:
                              FA_DOCUMENT_DATE,  # POSTING_DATE
                              amount,  # AMOUNT
                              open_amount,  # OPEN_AMOUNT
-                             "",  # CLEARED_AMOUNT
+                             "NULL",  # CLEARED_AMOUNT
                              np.random.choice([open_amount, 0], 1, p=[0.2, 0.8])[0],  # CURRENTLY_OPEN_AMOUNT
                              cur_clea_amount,  # CURRENTLY_CLEARED_AMOUNT
                              cur_late_amount,  # CURRENTLY_LATE_AMOUNT
                              cur_open_pd_amount,  # CURRENTLY_OPEN_PAST_DUE_AMOUNT
                              1,  # TRANSACTION_COUNT
-                             cur_open_days,  # CURRENTLY_OPEN_DAYS 
+                             cur_open_days,  # CURRENTLY_OPEN_DAYS
                              cur_open_days,  # CURRENTLY_OPEN_LATE_DAYS
                              0,  # CURRENTLY_OPEN_UNTIL_DUE_DAY
-                             ""  # DAYS_TO_CLOSURE
-                             ]
+                             "NULL"]  # DAYS_TO_CLOSURE
                             )
