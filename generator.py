@@ -12,7 +12,7 @@ import time
 import numpy as np
 
 # Set variables
-rowcount = 2
+rowcount = 100000
 startDate = "2014-01-01"
 endDate = "2015-12-31"
 
@@ -141,7 +141,7 @@ with open('data.csv', 'wb') as csvfile:
         status = np.random.choice(TRANSACTION_STATUS_ID, 1, p=[0.2, 0.8])[0]
         if status == "Open":
             open_amount = amount
-            cur_open_pd_amount = np.random.choice([open_amount, 0], 1, p=[0.2, 0.8])[0]
+            cur_open_pd_amount = round(np.random.choice([open_amount, 0], 1, p=[0.2, 0.8])[0], 2)
             cur_open_days = int(r.expovariate(1.5) * 20)
         #  Cleared
         else:
@@ -149,7 +149,7 @@ with open('data.csv', 'wb') as csvfile:
             cur_open_pd_amount = 0
             cur_open_days = 0
             cur_clea_amount = amount
-            cur_late_amount = np.random.choice([amount, 0], 1, p=[0.2, 0.8])[0]
+            cur_late_amount = round(np.random.choice([amount, 0], 1, p=[0.2, 0.8])[0], 2)
         datawriter.writerow([TAS_SOURCE_ID,
                              r.choice(COMPANY_ID),
                              r.choice(BUSINESS_AREA_ID),
@@ -176,7 +176,7 @@ with open('data.csv', 'wb') as csvfile:
                              amount,  # AMOUNT
                              open_amount,  # OPEN_AMOUNT
                              "NULL",  # CLEARED_AMOUNT
-                             np.random.choice([open_amount, 0], 1, p=[0.2, 0.8])[0],  # CURRENTLY_OPEN_AMOUNT
+                             round(np.random.choice([open_amount, 0], 1, p=[0.2, 0.8])[0], 2),  # CURRENTLY_OPEN_AMOUNT
                              cur_clea_amount,  # CURRENTLY_CLEARED_AMOUNT
                              cur_late_amount,  # CURRENTLY_LATE_AMOUNT
                              cur_open_pd_amount,  # CURRENTLY_OPEN_PAST_DUE_AMOUNT
@@ -184,5 +184,5 @@ with open('data.csv', 'wb') as csvfile:
                              cur_open_days,  # CURRENTLY_OPEN_DAYS
                              cur_open_days,  # CURRENTLY_OPEN_LATE_DAYS
                              0,  # CURRENTLY_OPEN_UNTIL_DUE_DAY
-                             "NULL"]  # DAYS_TO_CLOSURE
+                             0]  # DAYS_TO_CLOSURE
                             )
